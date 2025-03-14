@@ -49,6 +49,40 @@ public class Maze {
         return solution;
     }
 
+    public ArrayList<String> part2() {
+        ArrayList<String> solution = new ArrayList<String>();
+        solution.add("(0,0)");
+        String endingPoint = "(" + (maze.length - 1) + "," + (maze[0].length - 1) + ")";
+        ArrayList<String> forkPoints = new ArrayList<String>();
+
+        String currentPoint = "(0,0)";
+        int currentRow = 0;
+        int currentColumn = 0;
+        while (!currentPoint.equals(endingPoint)) {
+
+            maze[currentRow][currentColumn] = "#";
+
+            if (canMoveUp(currentPoint)) {
+                currentRow -= 1;
+            }
+            if (canMoveDown(currentPoint)) {
+                currentRow += 1;
+            }
+            if (canMoveLeft(currentPoint)) {
+                currentColumn -= 1;
+            }
+            if (canMoveRight(currentPoint)) {
+                currentColumn += 1;
+            }
+
+            currentPoint = "(" + currentRow + "," + currentColumn + ")";
+            solution.add( currentPoint);
+        }
+
+
+        return solution;
+    }
+
     private int pointRow(String point) {
         int row = Integer.parseInt(point.substring(1, point.indexOf(",")));
         return row;
