@@ -7,7 +7,8 @@ import java.util.Arrays;
 public class Main {
     public static void main(String[] args) {
         Maze maze = new Maze(getMaze("src/MazeFile"));
-        System.out.println(maze);
+
+        System.out.println(maze.part1());
 
     }
 
