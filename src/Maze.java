@@ -27,7 +27,7 @@ public class Maze {
         int currentRow = 0;
         int currentColumn = 0;
         while (!currentPoint.equals(endingPoint)) {
-            maze[currentRow][currentColumn] = "#";
+            maze[currentRow][currentColumn] = "V";
             if (canMoveUp(currentPoint)) {
                     currentRow -= 1;
             }
@@ -58,25 +58,47 @@ public class Maze {
         String currentPoint = "(0,0)";
         int currentRow = 0;
         int currentColumn = 0;
+        int deadEndcount = 0;
         while (!currentPoint.equals(endingPoint)) {
 
-            maze[currentRow][currentColumn] = "#";
+            maze[currentRow][currentColumn] = "V";
 
-            if (canMoveUp(currentPoint)) {
-                currentRow -= 1;
+            if (fork(currentPoint)) {
+                deadEndcount = 0;
+                forkPoints.add(currentPoint);
             }
-            if (canMoveDown(currentPoint)) {
-                currentRow += 1;
+            else
+            {
+                if (forkPoints.size() > 0) {
+                    deadEndcount++;
+                }
+                if (canMoveUp(currentPoint)) {
+                    currentRow -= 1;
+                }
+                else if (canMoveDown(currentPoint)) {
+                    currentRow += 1;
+                }
+                else if (canMoveLeft(currentPoint)) {
+                    currentColumn -= 1;
+                }
+                else if (canMoveRight(currentPoint)) {
+                    currentColumn += 1;
+                }
             }
-            if (canMoveLeft(currentPoint)) {
-                currentColumn -= 1;
-            }
-            if (canMoveRight(currentPoint)) {
-                currentColumn += 1;
-            }
+
 
             currentPoint = "(" + currentRow + "," + currentColumn + ")";
-            solution.add( currentPoint);
+            solution.add(currentPoint);
+
+            if (!canMoveUp(currentPoint) && !canMoveDown(currentPoint) && !canMoveLeft(currentPoint) && !canMoveRight(currentPoint)) {
+                currentPoint = forkPoints.getLast();
+                for (int i = 0; i < deadEndcount; i++) {
+                    solution.removeLast();
+                }
+                forkPoints.removeLast();
+                deadEndcount = 0;
+            }
+            System.out.println(this);
         }
 
 
@@ -129,6 +151,28 @@ public class Maze {
 
         if (column != maze[row].length - 1) {
             return maze[row][column + 1].equals(".");
+        }
+        return false;
+    }
+
+    private boolean fork(String currentPoint) {
+        if (canMoveUp(currentPoint) && canMoveDown(currentPoint)) {
+            return true;
+        }
+        else if (canMoveUp(currentPoint) && canMoveRight(currentPoint)) {
+            return true;
+        }
+        else if (canMoveUp(currentPoint) && canMoveLeft(currentPoint)) {
+            return true;
+        }
+        else if (canMoveDown(currentPoint) && canMoveLeft(currentPoint)) {
+            return true;
+        }
+        else if (canMoveDown(currentPoint) && canMoveRight(currentPoint)) {
+            return true;
+        }
+        else if (canMoveRight(currentPoint) && canMoveLeft(currentPoint)) {
+            return true;
         }
         return false;
     }
