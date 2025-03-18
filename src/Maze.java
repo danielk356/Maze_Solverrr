@@ -67,40 +67,37 @@ public class Maze {
                 deadEndcount = 0;
                 forkPoints.add(currentPoint);
             }
-            else
-            {
-                if (forkPoints.size() > 0) {
-                    deadEndcount++;
-                }
-                if (canMoveUp(currentPoint)) {
-                    currentRow -= 1;
-                }
-                else if (canMoveDown(currentPoint)) {
-                    currentRow += 1;
-                }
-                else if (canMoveLeft(currentPoint)) {
-                    currentColumn -= 1;
-                }
-                else if (canMoveRight(currentPoint)) {
-                    currentColumn += 1;
-                }
+            if (forkPoints.size() > 0) {
+                deadEndcount++;
             }
-
+            if (canMoveUp(currentPoint)) {
+                currentRow -= 1;
+            } else if (canMoveDown(currentPoint)) {
+                currentRow += 1;
+            } else if (canMoveLeft(currentPoint)) {
+                currentColumn -= 1;
+            } else if (canMoveRight(currentPoint)) {
+                currentColumn += 1;
+            }
 
             currentPoint = "(" + currentRow + "," + currentColumn + ")";
             solution.add(currentPoint);
 
-            if (!canMoveUp(currentPoint) && !canMoveDown(currentPoint) && !canMoveLeft(currentPoint) && !canMoveRight(currentPoint)) {
+            if (currentPoint.equals(endingPoint)) {
+                forkPoints.removeAll(forkPoints);
+            }
+
+            if (!canMoveUp(currentPoint) && !canMoveDown(currentPoint) && !canMoveLeft(currentPoint) && !canMoveRight(currentPoint) && forkPoints.size() > 0) {
                 currentPoint = forkPoints.getLast();
+                currentColumn = pointColumn(currentPoint);
+                currentRow = pointRow(currentPoint);
                 for (int i = 0; i < deadEndcount; i++) {
                     solution.removeLast();
                 }
                 forkPoints.removeLast();
                 deadEndcount = 0;
             }
-            System.out.println(this);
         }
-
 
         return solution;
     }

@@ -2,13 +2,13 @@ import java.io.File;
 import java.io.FileNotFoundException;
 import java.util.ArrayList;
 import java.util.Scanner;
-import java.util.Arrays;
 
 public class Main {
     public static void main(String[] args) {
         Maze maze = new Maze(getMaze("src/MazeFile"));
 
         System.out.println("Part 2: " + maze.part2());
+
 
     }
 
